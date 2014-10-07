@@ -76,3 +76,5 @@ http://www.adobe.com/devnet/scout/articles/adobe-scout-data.html
 http://www.adobe.com/devnet/scout/articles/adobe-scout-custom-telemetry.html
 
 https://github.com/claus/Pfadfinder - Claus Wahlers' similar project
+
+http://renaun.com/blog/2012/12/enable-advanced-telemetry-on-flex-or-old-swfs-with-swf-scount-enabler/ - Renaun's AIR app to enable telemetry tag in SWFs
