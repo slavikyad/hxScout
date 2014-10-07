@@ -5,8 +5,9 @@ A Haxe Scout Alternative
 
 What
 ----
-hxScout aims to be a replacement for Adobe Scout - that is, it will display
-telemetry, debug, and memory usage data from a Flash Player runtime.
+hxScout aims to be a free, cross-platform alternative to Adobe Scout providing
+much the same capability - that is, it will display telemetry, debug, and memory
+usage data from a Flash Player runtime.
 
 Why?
 ----
