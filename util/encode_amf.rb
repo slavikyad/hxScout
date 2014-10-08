@@ -9,7 +9,7 @@ infile = ARGV[0]
 outfile = ARGV[1]
  
 if (infile==nil || outfile==nil) then
-  puts "usage: to_amf.rb <json_or_yaml_file> <outfile.amf>"
+  puts "usage: encode_amf.rb <json_or_yaml_file> <outfile.amf>"
   exit
 end
  

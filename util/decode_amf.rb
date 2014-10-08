@@ -24,7 +24,7 @@ if (ARGV.length==0) then
   puts "usage: print_amf.rb <infile.amf>"
   exit
 end
- 
+
 # And a little command-line utility for printing AMF as JSON
 require 'json'
  
