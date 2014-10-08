@@ -10,7 +10,12 @@ To run a testcase and capture the FLM with netcat:
     ./compile.sh
     ../../util/capture_flm.sh & ./simulate.sh
 
-To push that flm to hxScout:
+Verify your .flm file got captured:
+
+    > ls -la capture.flm
+    -rw-rw-r-- 1 jward jward 25980 Oct  7 22:53 capture.flm
+
+To push that flm to hxScout (from hxScout directory):
 
     Terminal 1> ./server.sh > flm_exploration/test_x/capture.txt
     Terminal 2> util/push_flm.sh flm_exploration/test_x/capture.flm
