@@ -19,10 +19,7 @@ package
                                trace("At frame "+frame);
                                if (frame==4) {
                                  trace("Goodbye!");
-                                 stage.frameRate = 0.1;
-                                 setTimeout(function():void {
-                                   NativeApplication.nativeApplication.exit();
-                                 }, 500);
+                                 NativeApplication.nativeApplication.exit();
                                }
                              });
     }
