@@ -3,6 +3,7 @@ package
   import flash.display.Sprite;
   import flash.events.Event;
   import flash.desktop.NativeApplication;
+  import flash.utils.setTimeout;
 
   [SWF( width="640", height="480", backgroundColor="#ff0000", frameRate="60")]
   public class Main extends Sprite
@@ -18,7 +19,10 @@ package
                                trace("At frame "+frame);
                                if (frame==4) {
                                  trace("Goodbye!");
-                                 NativeApplication.nativeApplication.exit();
+                                 stage.frameRate = 0.1;
+                                 setTimeout(function():void {
+                                   NativeApplication.nativeApplication.exit();
+                                 }, 500);
                                }
                              });
     }

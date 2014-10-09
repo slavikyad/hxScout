@@ -4,21 +4,18 @@ hxScout FLM Exploration
 These tests are quick AIR apps that perform a few certain tasks and exit,
 hopefully allowing some triage of relatively small FLM dumps.
 
-To run a testcase and capture the FLM with netcat:
+To run a testcase, capture FLM output, and convert FLM to a text file (JSON objects):
 
-    cd flm_exploration/test_x
-    ./compile.sh
-    ../../util/capture_flm.sh & ./simulate.sh
+    ./run_test.rb test_frames sampler ~/.wine/drive_c/users/jward/.telemetry.cfg
 
-To push that flm to hxScout:
+Where `test_frames` is the testcase to run, `sampler` is the config (see
+various config names in `./config/`, and `~/.wine/drive_c/users/jward/.telemetry.cfg`
+is the location of your `.telemetry.cfg` file.
 
-    Terminal 1> ./server.sh > flm_exploration/test_x/capture.txt
-    Terminal 2> util/push_flm.sh flm_exploration/test_x/capture.flm
+The test runner copies the given telemetry config, compiles and simulates the
+testcase, and captures the .flm and .txt output in the test directory.
 
-Then break the first command after running the second -- `Server.hx` currently
-does not exit after a single connection.
-
-You could also push this FLM to Adobe Scout using netcat (to localhost or IP address):
+You could also push this FLM to hxScout or Adobe Scout using netcat (to localhost or IP address):
 
     nc localhost 7934 < flm_exploration/test_x/capture.flm
 
@@ -28,4 +25,4 @@ errors binding to port 7934) you can find it using
 
     tcp  0  0  127.0.0.1:7934  0.0.0.0:*  LISTEN  32183/neko      
 
-So then: `kill 32183`
+So then: `kill 32183` or slightly more dangerously, `killall nc`
