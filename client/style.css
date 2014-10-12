@@ -21,9 +21,7 @@ body {
 .frame-idle {
   background-color:#555;
 }
-.frame-as {
-  background-color:#44c;
-}
-.frame-gc {
-  background-color:#c44;
-}
+.frame-as { background-color:#28c; }
+.frame-gc { background-color:#d52; }
+.frame-other { background-color:#a48; }
+.frame-rend { background-color:#6a6; }
