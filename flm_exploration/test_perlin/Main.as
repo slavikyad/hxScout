@@ -1,8 +1,11 @@
 package
 {
   import flash.desktop.NativeApplication;
+  import flash.display.Bitmap;
   import flash.display.BitmapData;
   import flash.display.Sprite;
+  import flash.geom.Rectangle;
+  import flash.utils.ByteArray;
   import flash.utils.getTimer;
   import flash.utils.setTimeout;
 
@@ -16,10 +19,13 @@ package
       setTimeout(do_perlin, 200);
     }
 
+    private var b:ByteArray;
+    private var bd:BitmapData;
+
     private function do_perlin():void
     {
       var t0:Number = getTimer();
-      var bd:BitmapData = new BitmapData(1024,1024,true,0x0);
+      bd = new BitmapData(1024,1024,true,0x0);
       bd.perlinNoise(64,64,7,12345,false,true);
       trace("Perlin took "+(getTimer()-t0)+" ms");
 
@@ -27,7 +33,19 @@ package
       bd.histogram();
       trace("Histogram took "+(getTimer()-t0)+" ms");
 
-      setTimeout(exit, 200);
+      setTimeout(function():void {
+        addChild(new Bitmap(bd));
+      }, 100);
+
+      setTimeout(function():void {
+        b = new ByteArray();
+        for (var i:int=0; i<10000; i++) {
+          b.writeInt(i);
+        }
+        trace("Bytearray length is: "+b.length);
+      }, 200);
+
+      setTimeout(exit, 300);
     }
 
     private function exit():void {

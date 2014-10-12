@@ -7,7 +7,18 @@ body {
   top:5px;
   left:5px;
   right:5px;
-  height:300px;
+  height:200px;
+  background-color: #333;
+  border: 1px solid #555;
+  overflow: hidden;
+}
+
+.mem-cont {
+  position:fixed;
+  top:210px;
+  left:5px;
+  right:5px;
+  height:200px;
   background-color: #333;
   border: 1px solid #555;
   overflow: hidden;
@@ -16,12 +27,14 @@ body {
 .frame {
   position:absolute;
   bottom:0px;
-  width:6px;
+  width:5px;
 }
 .frame-idle {
-  background-color:#555;
+  background-color:#444;
 }
 .frame-as { background-color:#28c; }
 .frame-gc { background-color:#d52; }
 .frame-other { background-color:#a48; }
 .frame-rend { background-color:#6a6; }
+
+.frame-total { background-color:#6a6; }

@@ -33,6 +33,10 @@ class Server {
         } catch( ex:haxe.io.Eof )  { connected = false; }
 
         if (data!=null) {
+
+          var name:String = cast(data['name'], String);
+
+          // Timing / Span / Delta
           if (data['delta']!=null) {
             // Delta without a span implies span = 0 ?
             var t:Timing = { delta:data['delta'], span:data['span']==null?0:data['span'], prev:null, self_time:0 };
@@ -40,7 +44,7 @@ class Server {
             cur_frame.duration.total += t.delta;
 
             if (t.span>cur_frame.duration.total) {
-              if (data['name']!='.network.localconnection.idle') {
+              if (name!='.network.localconnection.idle') {
                 trace("Event larger ("+t.span+") than current frame ("+cur_frame.duration.total+"): "+data);
               }
             }
@@ -50,12 +54,10 @@ class Server {
             //trace("- Considering: "+data+", self="+self_time+", lookback="+lookback+" -- t="+t);
             var tref:Timing = cur_frame.timing;
             while (lookback>0 && tref!=null) {
-              if (lookback>tref.delta) {
+              if (lookback>=tref.delta) {
                 self_time -= tref.delta;
-                //trace("  -- fully includes ("+tref.delta+"), now "+self_time+", dropping lookback to "+(lookback-tref.delta));
-              } else if (lookback>tref.span) {
+              } else if (lookback>=tref.span) {
                 self_time -= tref.span;
-                //trace("  -- QUESTIONABLE includes span ("+tref.span+"), now "+self_time+", dropping lookback to "+(lookback-tref.delta));
               } else {
                 //trace("  -- does not include ("+tref.delta+"), dropping lookback to "+(lookback-tref.delta));
               }
@@ -68,7 +70,6 @@ class Server {
 
             //trace("  -- Final self time: "+self_time);
             if (self_time<0) throw "Umm, can't have negative self time!!";
-            var name:String = cast(data['name'], String);
 
             //trace("  -- "+name+": "+self_time);
 
@@ -97,7 +98,12 @@ class Server {
             if (data['span']!=null) throw( "Span without a delta on: "+data);
           }
 
-          if (data['name']!=".enter") cur_frame.events.push(data);
+          // Memory
+          if (name.indexOf(".mem.")==0 && data["value"]!=null) {
+            var type:String = name.substr(5);
+            //if (cur_frame.mem[type]==null) cur_frame.mem[type] = 0;
+            cur_frame.mem[type] = data["value"];
+          }
 
           if (data['name']==".enter") {
             if (first_enter) {
@@ -107,7 +113,6 @@ class Server {
               Sys.stdout().writeString(cur_frame.to_json()+",\n");
               frames.push(cur_frame);
               cur_frame = new Frame(cur_frame.id+1);
-              cur_frame.events.push(data);
             }
           }
         }
@@ -117,11 +122,12 @@ class Server {
 }
 
 class Frame {
-  public var id(default,null):Int;
-  public var duration(default,default):Dynamic;
-  public var events(default,null):Array<Dynamic>;
+  public var id:Int;
+  public var duration:Dynamic;
+  public var mem:Map<String, Int>;
+  //public var events:Array<Dynamic>;
   #if DEBUG_UNKNOWN
-    public var unknown_names(default,null):Array<String>;
+    public var unknown_names:Array<String>;
   #end
   public var timing:Timing;
 
@@ -135,10 +141,11 @@ class Frame {
     duration.rend = 0;
     duration.swf = 0;
     duration.unknown = 0;
+    mem = new Map<String, Int>();
     #if DEBUG_UNKNOWN
       unknown_names = [];
     #end
-    events = [];
+    //events = [];
   }
 
   public function to_json():String
@@ -148,7 +155,8 @@ class Frame {
       #if DEBUG_UNKNOWN
           unknown_names:unknown_names,
       #end
-      duration:duration
+      duration:duration,
+      mem:mem
     });
   }
 }
