@@ -16,7 +16,8 @@ and I'm a linux and OSS fan.
 
 Status
 ------
-Oct 8, 2014: Pre-alpha proof of concept - there is a socket server and AMF reader proof
+
+Pre-alpha proof of concept - there is a socket server and AMF reader proof
 of concept. It currently only tracks frame durations, and doesn't do it
 quite correctly, but it's on the right track.
 
@@ -24,11 +25,9 @@ I've also setup a number of [flm_exploration](https://github.com/jcward/hxScout/
 that run various AS3 AIR app tests, capturing the .flm output with a variety of telemetry
 configuration options (basic, sampler, cpu, allocations, etc).
 
-I've piped a testcase output through the Server.hx to create a summary of
-frames, and I've hard-coded the output frame duration data into a [prototype web client
-view](https://github.com/jcward/hxScout/tree/master/client) just for a visual sanity check.  This testcase happens to change the stage
-framerate, as well as performing some simple numeric calculations on each frame,
-and voila, something reasonable and familiar:
+I've piped [a testcase](https://github.com/jcward/hxScout/tree/master/flm_exploration/test_wastealloc) output through the Server.hx to create a summary of
+frames timing and memory usage, and I've hard-coded the output frame duration data into a [prototype web client
+view](https://github.com/jcward/hxScout/tree/master/client) just for a visual sanity check.  This testcase makes useless allocations to see the garbage collector at work, and voila, something reasonable and familiar:
 
 # ![hxScout client PoC](https://raw.githubusercontent.com/jcward/hxScout/master/screenshots/client_sanity.png)
 
