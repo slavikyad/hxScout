@@ -27,7 +27,7 @@ configuration options (basic, sampler, cpu, allocations, etc).
 
 I've piped [a testcase](https://github.com/jcward/hxScout/tree/master/flm_exploration/test_wastealloc) output through the Server.hx to create a summary of
 frames timing and memory usage, and I've hard-coded the output frame duration data into a [prototype web client
-view](https://github.com/jcward/hxScout/tree/master/client) just for a visual sanity check.  This testcase makes useless allocations to see the garbage collector at work, and voila, something reasonable and familiar:
+view](https://github.com/jcward/hxScout/tree/master/proto_client) just for a visual sanity check.  This testcase makes useless allocations to see the garbage collector at work, and voila, something reasonable and familiar:
 
 # ![hxScout client PoC](https://raw.githubusercontent.com/jcward/hxScout/master/screenshots/client_sanity.png)
 

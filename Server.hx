@@ -14,6 +14,7 @@ class Server {
     var delta:Int = 0;
     var first_enter = true;
     var next_is_as = false;
+    var stack_strings:Array<String> = ["1-indexed"];
 
     var s = new sys.net.Socket();
     s.bind(new sys.net.Host("localhost"),7934); // Default Scout port
@@ -33,10 +34,12 @@ class Server {
         } catch( ex:haxe.io.Eof )  { connected = false; }
 
         if (data!=null) {
-
+          //trace(data);
           var name:String = cast(data['name'], String);
 
+          // - - - - - - - - - - - -
           // Timing / Span / Delta
+          // - - - - - - - - - - - -
           if (data['delta']!=null) {
             // Delta without a span implies span = 0 ?
             var t:Timing = { delta:data['delta'], span:data['span']==null?0:data['span'], prev:null, self_time:0 };
@@ -98,11 +101,39 @@ class Server {
             if (data['span']!=null) throw( "Span without a delta on: "+data);
           }
 
+          // - - - - - - - - - - - -
           // Memory
+          // - - - - - - - - - - - -
           if (name.indexOf(".mem.")==0 && data["value"]!=null) {
             var type:String = name.substr(5);
             //if (cur_frame.mem[type]==null) cur_frame.mem[type] = 0;
             cur_frame.mem[type] = data["value"];
+          }
+
+          // - - - - - - - - - - - -
+          // Sampler
+          // - - - - - - - - - - - -
+          if (name.indexOf(".sampler.")==0) {
+            if (name==".sampler.methodNameMap") {
+              var bytes = cast(data["value"], haxe.io.Bytes);
+              var start=0;
+              for (i in 0...bytes.length) {
+                var b = bytes.get(i);
+                if (b==0) {
+                  stack_strings.push(bytes.getString(start, i-start));
+                  start = i+1;
+                }
+              }
+              trace("Stack strings now: "+stack_strings.length);
+              for (i in 0...stack_strings.length) {
+                trace(i+": "+stack_strings[i]);
+              }
+            }
+            else if (name==".sampler.sample") {
+              // var value:Map<String,Dynamic> = data["value"];
+              // trace(value["callstack"]);
+              trace(data);
+            }
           }
 
           if (data['name']==".enter") {
